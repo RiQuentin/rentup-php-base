@@ -25,3 +25,20 @@ function getPropertyTypes(): array
 
     return $propertyTypeStatement->fetchAll();
 }
+
+function getProperties(): array
+{
+    $db = connectDatabase();
+
+
+    $sqlQuery = 'SELECT *
+                    FROM property
+                    INNER JOIN propertytype ON property.property_type_id = propertytype.id';
+    $parameters = [];
+//    }
+
+    $propertyStatement = $db->prepare($sqlQuery);
+    $propertyStatement->execute($parameters);
+
+    return $propertyStatement->fetchAll();
+}

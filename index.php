@@ -43,10 +43,10 @@ include_once('./include/fonctions.php');
                     <?php foreach (getPropertyTypes() as $propertyType) : ?>
                     <article class="card">
                         <div class="icon">
-                            <img src="./images/<?php echo $propertyType['picto'] ?>" alt="">
+                            <img src="./images/<?php echo htmlentities($propertyType['picto']) ?>" alt="<?php echo htmlentities($propertyType['nametype']) ?>">
                         </div>
-                        <h3><?php echo $propertyType['nametype'] ?></h3>
-                        <p><?php echo $propertyType['nbproperty'] ?></p>
+                        <h3><?php echo htmlentities($propertyType['nametype']) ?></h3>
+                        <p><?php echo htmlentities($propertyType['nbproperty']) ?></p>
                     </article>
                     <?php endforeach ?>
                 </div>
@@ -64,106 +64,39 @@ include_once('./include/fonctions.php');
                 </header>
 
                 <div class="property-list">
+
+                    <?php  ?>
+                    <?php foreach (getProperties() as $property) : ?>
                     <article class="card">
                         <div class="card-img-container">
-                            <img src="./images/p-1.png" alt="Red Carpet Real Estate">
+                            <img src="./images/<?php echo htmlentities($property['image']) ?>" alt="<?php echo htmlentities($property['name']) ?>">
                         </div>
                         <div class="card-content">
                             <header class="card-content-header">
-                                <div class="badge badge-warning">For Rent</div>
+                                <?php if ($property['status'] === 'For Rent'): ?>
+                                    <div class="badge badge-warning">For Rent</div>
+                                <?php else: ?>
+                                    <div class="badge badge-success">For Sale</div>
+                                <?php endif; ?>
                                 <i class="fa fa-heart-o"></i>
                             </header>
-                            <h3>Red Carpet Real Estate</h3>
+                            <h3><?php echo htmlentities($property['name']) ?></h3>
                             <p>
                                 <i class="fa fa-map-marker"></i>
-                                210 Zirak Road, Canada
+                                <?php echo htmlentities($property['postal_code'].'  '.$property['street'].'  ,'.$property['country']) ?>
                             </p>
                         </div>
                         <footer class="card-footer">
                             <div>
                                 <div class="btn btn-primary">
-                                    $3,700
+                                    $<?php echo htmlentities($property['price']) ?>
                                 </div>
                                 <span>/sqft</span>
                             </div>
-                            <div>Apartment</div>
+                            <div><?php echo htmlentities($property['nametype']) ?></div>
                         </footer>
                     </article>
-                    <article class="card">
-                        <div class="card-img-container">
-                            <img src="./images/test.jpg" alt="Red Carpet Real Estate">
-                        </div>
-                        <div class="card-content">
-                            <header class="card-content-header">
-                                <div class="badge badge-success">For Sale</div>
-                                <i class="fa fa-heart-o"></i>
-                            </header>
-                            <h3>Red Carpet Real Estate</h3>
-                            <p>
-                                <i class="fa fa-map-marker"></i>
-                                210 Zirak Road, Canada
-                            </p>
-                        </div>
-                        <footer class="card-footer">
-                            <div>
-                                <div class="btn btn-primary">
-                                    $3,700
-                                </div>
-                                <span>/sqft</span>
-                            </div>
-                            <div>Apartment</div>
-                        </footer>
-                    </article>
-                    <article class="card">
-                        <div class="card-img-container">
-                            <img src="./images/p-3.png" alt="Red Carpet Real Estate">
-                        </div>
-                        <div class="card-content">
-                            <header class="card-content-header">
-                                <div class="badge badge-warning">For Rent</div>
-                                <i class="fa fa-heart-o"></i>
-                            </header>
-                            <h3>Red Carpet Real Estate</h3>
-                            <p>
-                                <i class="fa fa-map-marker"></i>
-                                210 Zirak Road, Canada
-                            </p>
-                        </div>
-                        <footer class="card-footer">
-                            <div>
-                                <div class="btn btn-primary">
-                                    $3,700
-                                </div>
-                                <span>/sqft</span>
-                            </div>
-                            <div>Apartment</div>
-                        </footer>
-                    </article>
-                    <article class="card">
-                        <div class="card-img-container">
-                            <img src="./images/p-4.png" alt="Red Carpet Real Estate">
-                        </div>
-                        <div class="card-content">
-                            <header class="card-content-header">
-                                <div class="badge badge-warning">For Rent</div>
-                                <i class="fa fa-heart-o"></i>
-                            </header>
-                            <h3>Red Carpet Real Estate</h3>
-                            <p>
-                                <i class="fa fa-map-marker"></i>
-                                210 Zirak Road, Canada
-                            </p>
-                        </div>
-                        <footer class="card-footer">
-                            <div>
-                                <div class="btn btn-primary">
-                                    $3,700
-                                </div>
-                                <span>/sqft</span>
-                            </div>
-                            <div>Apartment</div>
-                        </footer>
-                    </article>
+                    <?php endforeach ?>
                 </div>
 
             </div>
