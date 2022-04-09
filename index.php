@@ -1,6 +1,13 @@
+<?php
+
+//session_start();
+
+include_once('./include/fonctions.php');
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr-FR">
-<?php echo 'toto'; ?>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,43 +38,17 @@
                     <h2>Featured Property Types</h2>
                     <p>Find All Type of Property.</p>
                 </header>
-
+                <?php  ?>
                 <div class="property-type-list">
+                    <?php foreach (getPropertyTypes() as $propertyType) : ?>
                     <article class="card">
                         <div class="icon">
-                            <i class="fa fa-user"></i>
+                            <img src="./images/<?php echo $propertyType['picto'] ?>" alt="">
                         </div>
-                        <h3>Maison</h3>
-                        <p>122 propriétés</p>
+                        <h3><?php echo $propertyType['nametype'] ?></h3>
+                        <p><?php echo $propertyType['nbproperty'] ?></p>
                     </article>
-                    <article class="card">
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
-                        </div>
-                        <h3>Appartement</h3>
-                        <p>82 propriétés</p>
-                    </article>
-                    <article class="card">
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
-                        </div>
-                        <h3>Appartement</h3>
-                        <p>82 propriétés</p>
-                    </article>
-                    <article class="card">
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
-                        </div>
-                        <h3>Appartement</h3>
-                        <p>82 propriétés</p>
-                    </article>
-                    <article class="card">
-                        <div class="icon">
-                            <i class="fa fa-home"></i>
-                        </div>
-                        <h3>Appartement</h3>
-                        <p>82 propriétés</p>
-                    </article>
+                    <?php endforeach ?>
                 </div>
             </div>
         </section>
