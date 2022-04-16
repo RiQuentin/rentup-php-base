@@ -42,3 +42,45 @@ function getProperties(): array
 
     return $propertyStatement->fetchAll();
 }
+
+
+function getSellers(): array
+{
+    $db = connectDatabase();
+
+    /*
+     SELECT seller.*, COUNT(property.name) AS nbproperty
+    FROM `seller`
+    INNER JOIN property ON seller.id = property.seller_id
+    GROUP BY seller.id;
+     */
+
+    $sqlQuery = 'SELECT *
+                    FROM seller
+                    ';
+    $parameters = [];
+//    }
+
+    $sellerStatement = $db->prepare($sqlQuery);
+    $sellerStatement->execute($parameters);
+
+    return $sellerStatement->fetchAll();
+}
+
+function getNbPropertyBySeller($idSeller): array
+{
+    $db = connectDatabase();
+
+
+    $sqlQuery = 'SELECT COUNT(property.name) AS nbproperty
+                    FROM `seller`
+                    INNER JOIN property ON seller.id = property.seller_id
+                    WHERE seller.id = :idseller;';
+    $parameters = ['idseller' => $idSeller];
+//    }
+
+    $sellerIdStatement = $db->prepare($sqlQuery);
+    $sellerIdStatement->execute($parameters);
+
+    return $sellerIdStatement->fetchAll();
+}

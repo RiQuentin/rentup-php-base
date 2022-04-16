@@ -8,12 +8,12 @@
                 <nav class="main-navigation">
                     <ul>
                         <li>
-                            <a href="index.html">
+                            <a href="index.php">
                                 Accueil
                             </a>
                         </li>
                         <li class="sub-menu">
-                            <a href="properties.html">
+                            <a href="#">
                                 Nos Propriétés
                             </a>
                             <ul>
@@ -29,7 +29,12 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="contact.html">
+                            <a href="properties.php">
+                                Gestion des propriétées
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
                                 Nous Contacter
                             </a>
                         </li>

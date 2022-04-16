@@ -178,22 +178,27 @@ include_once('./include/fonctions.php');
                         officia quia atque nam.</p>
                 </header>
                 <div class="agents-list">
+                    <?php foreach (getSellers() as $seller) : ?>
                     <article class="card">
                         <div class="card-img-container">
                             <div class="badge">
-                                72 listings
+                                <?php
+                                $array=getNbPropertyBySeller($seller['id']);
+                                echo $array[0]['nbproperty'];
+                                 ?>
+                                listings
                             </div>
                             <div class="agent-img">
                                 <span>
                                     <img class="check" src="./images/verified.svg" alt="">
                                 </span>
-                                <img class="agent-photo" src="./images/team-2.jpg" alt="portrait-agent-2">
+                                <img class="agent-photo" src="./images/<?= $seller['profil_picture']; ?>" alt="portrait-agent-2">
                             </div>
                             <div class="agent-localisation">
-                                <i class="fa fa-map-marker"></i> 2272 Briarwood Drive
+                                <i class="fa fa-map-marker"></i> <?= $seller['location']; ?>
                             </div>
                             <div class="agent-name">
-                                <h3>Anne K. Young</h3>
+                                <h3><?= $seller['firstname']; ?>  <?= $seller['lastname']; ?></h3>
                             </div>
                             <div class="agent-contact">
                                 <ul>
@@ -230,113 +235,7 @@ include_once('./include/fonctions.php');
                             </footer>
                         </div>
                     </article>
-
-                    <article class="card">
-                        <div class="card-img-container">
-                            <div class="badge">
-                                50 listings
-                            </div>
-                            <div class="agent-img">
-                                <span>
-                                    <img class="check" src="./images/verified.svg" alt="">
-                                </span>
-                                <img class="agent-photo" src="./images/team-1.jpg" alt="portrait-agent-2">
-                            </div>
-                            <div class="agent-localisation">
-                                <i class="fa fa-map-marker"></i> Montreal Canada
-                            </div>
-                            <div class="agent-name">
-                                <h3>Harijeet M. Siller</h3>
-                            </div>
-                            <div class="agent-contact">
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <i id="facebook" class="fa fa-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i id="linkedin" class="fa fa-linkedin"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i id="instagram" class="fa fa-instagram"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i id="twitter" class="fa fa-twitter"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <footer class="card-footer">
-                                <div class="btn btn-primary">
-                                    <i class="fa fa-envelope-o"></i>
-                                    Message
-                                </div>
-                                <div class="btn btn-secondary">
-                                    <i class="fa fa-phone"></i>
-                                </div>
-                            </footer>
-                        </div>
-                    </article>
-
-                    <article class="card">
-                        <div class="card-img-container">
-                            <div class="badge">
-                                47 listings
-                            </div>
-                            <div class="agent-img">
-                                <span>
-                                    <img class="check" src="./images/verified.svg" alt="">
-                                </span>
-                                <img class="agent-photo" src="./images/team-4.jpg" alt="portrait-agent-2">
-                            </div>
-                            <div class="agent-localisation">
-                                <i class="fa fa-map-marker"></i> Liverpool Canada
-                            </div>
-                            <div class="agent-name">
-                                <h3>Sargam S. Singh</h3>
-                            </div>
-                            <div class="agent-contact">
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <i id="facebook" class="fa fa-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i id="linkedin" class="fa fa-linkedin"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i id="instagram" class="fa fa-instagram"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i id="twitter" class="fa fa-twitter"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <footer class="card-footer">
-                                <div class="btn btn-primary">
-                                    <i class="fa fa-envelope-o"></i>
-                                    Message
-                                </div>
-                                <div class="btn btn-secondary">
-                                    <i class="fa fa-phone"></i>
-                                </div>
-                            </footer>
-                        </div>
-                    </article>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </section>
