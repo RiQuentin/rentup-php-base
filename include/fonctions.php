@@ -67,7 +67,7 @@ function getSellers(): array
     return $sellerStatement->fetchAll();
 }
 
-function getNbPropertyBySeller($idSeller): array
+function getNbPropertyBySeller($idSeller): int
 {
     $db = connectDatabase();
 
@@ -81,6 +81,30 @@ function getNbPropertyBySeller($idSeller): array
 
     $sellerIdStatement = $db->prepare($sqlQuery);
     $sellerIdStatement->execute($parameters);
+    $nbProperty = $sellerIdStatement->fetchAll();
 
-    return $sellerIdStatement->fetchAll();
+    return $nbProperty[0]["nbproperty"];
+}
+
+function createProperty($name, $street, $city, $postalCode, $state, $country, $price, $status, $createdAt, $image, $propertyTypeId, $sellerId) {
+    $db = connectDatabase();
+    $sqlQuery = "INSERT INTO property(name, street, city, postal_code,state,country,price,status,created_at,image,property_type_id,seller_id) 
+                VALUES ( :name, :street, :city, :postal_code, :state, :country, :price, :status, :created_at, :image, :property_type_id, :seller_id )";
+
+    $propertyStatement = $db->prepare($sqlQuery);
+
+    return $propertyStatement->execute([
+        'name' => $name,
+        'street' => $street,
+        'city' => $city,
+        'postal_code' => $postalCode,
+        'state' => $state,
+        'country'=> $country,
+        'price'=> $price,
+        'status'=> $status,
+        'created_at'=> $createdAt,
+        'image'=> $image,
+        'property_type_id'=> $propertyTypeId,
+        'seller_id'=> $sellerId,
+    ]);
 }

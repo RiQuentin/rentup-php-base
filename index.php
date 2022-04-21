@@ -183,8 +183,7 @@ include_once('./include/fonctions.php');
                         <div class="card-img-container">
                             <div class="badge">
                                 <?php
-                                $array=getNbPropertyBySeller($seller['id']);
-                                echo $array[0]['nbproperty'];
+                                echo getNbPropertyBySeller($seller['id']);
                                  ?>
                                 listings
                             </div>
