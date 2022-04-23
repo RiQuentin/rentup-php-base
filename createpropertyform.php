@@ -4,6 +4,29 @@
 
 include_once('./include/fonctions.php');
 if (isset($_POST['name']) && isset($_POST['street'])) {
+
+    $filePathBdd = "default-image";
+
+    if ($_FILES['image']['error'] == 0){
+        if ($_FILES['image']['size'] <= 1000000){
+            $fileInfo = pathinfo($_FILES['image']['name']);
+            $extension = $fileInfo['extension'];
+            $mimetype = mime_content_type($_FILES['image']['tmp_name']);
+            $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+            if (in_array($extension, $allowedExtensions) && in_array($mimetype, array('image/jpeg', 'image/gif', 'image/png'))){
+                $filePathBdd = basename($_FILES['image']['name']);
+                $filePath = 'images/' . basename($_FILES['image']['name']);
+                move_uploaded_file($_FILES['image']['tmp_name'], $filePath);
+            }else {
+                echo '<script>alert("Le fichier doit être une image")</script>';
+            }
+        }else {
+            echo '<script>alert(" l \'image ne doit pas dépasser 1mo")</script>';
+        }
+    }else {
+        echo '<script>alert("Une erreur est survenue lors de l\'import de l\'image")</script>';
+    }
+
     if(createProperty(
             $_POST['name'],
             $_POST['street'],
@@ -14,11 +37,11 @@ if (isset($_POST['name']) && isset($_POST['street'])) {
             $_POST['price'],
             $_POST['status'],
             $_POST['createdAt'],
-            $_POST['image'],
+            $filePathBdd,
             $_POST['propertyTypeId'],
             $_POST['sellerId']
         ) === true) {
-        header('Location: /cours_php/tp-recette-decoupage/index.php');
+        header('Location: index.php');
     } else {
         $messageErreur = 'Une erreur est survenue lors de la création de la recette';
     }
