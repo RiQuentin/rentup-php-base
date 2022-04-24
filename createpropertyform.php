@@ -1,6 +1,7 @@
 <?php
 
 //session_start();
+$tokenUpdate = null;
 
 include_once('./include/fonctions.php');
 if (isset($_POST['name']) && isset($_POST['street'])) {
@@ -47,6 +48,11 @@ if (isset($_POST['name']) && isset($_POST['street'])) {
     }
 }
 
+if (isset($_GET['id'])){
+    $tokenUpdate = $_GET['id'];
+    $propertyDB = getPropertyById($_GET['id']);
+}
+
 
 ?>
 
@@ -76,35 +82,35 @@ if (isset($_POST['name']) && isset($_POST['street'])) {
     <section class="section">
         <div class="container">
 
-            <h1>Ajout d'une nouvelle propriétée :</h1>
+            <h1><?php echo $tokenUpdate!==null ? "Modifier une nouvelle propriétée" : "Ajout d'une nouvelle propriétée" ; ?> :</h1>
 
 
             <form class="form-group" action="createpropertyform.php" method="post"
                   enctype="multipart/form-data">
 
-                <label for="title">Nom :</label>
-                <input type="text" class="form-control" name="name" id="name" required>
+                <label for="name">Nom :</label>
+                <input type="text" class="form-control" name="name" id="name" required value="<?php if($tokenUpdate !== null){echo $propertyDB['name'];} ?>">
 
                 <label for="street">Rue :</label>
-                <input type="text" class="form-control" name="street" id="street" required>
+                <input type="text" class="form-control" name="street" id="street" required value="<?php if($tokenUpdate !== null){echo $propertyDB['street'];} ?>">
                 <br>
 
                 <label for="city">Ville :</label>
-                <input type="text" class="form-control" name="city" id="city" required>
+                <input type="text" class="form-control" name="city" id="city" required value="<?php if($tokenUpdate !== null){echo $propertyDB['city'];} ?>">
 
                 <label for="postalCode">Code postal :</label>
-                <input type="text" class="form-control" name="postalCode" id="postalCode" required>
+                <input type="text" class="form-control" name="postalCode" id="postalCode" required value="<?php if($tokenUpdate !== null){echo $propertyDB['postal_code'];} ?>">
                 <br>
 
                 <label for="state">State :</label>
-                <input type="text" class="form-control" name="state" id="state" required>
+                <input type="text" class="form-control" name="state" id="state" required value="<?php if($tokenUpdate !== null){echo $propertyDB['state'];} ?>">
 
                 <label for="country">Pays :</label>
-                <input type="text" class="form-control" name="country" id="country" required>
+                <input type="text" class="form-control" name="country" id="country" required value="<?php if($tokenUpdate !== null){echo $propertyDB['country'];} ?>">
                 <br>
 
                 <label for="price">Prix :</label>
-                <input type="number" class="form-control" name="price" id="price" placeholder="€" required>
+                <input type="number" class="form-control" name="price" id="price" placeholder="€" required value="<?php if($tokenUpdate !== null){echo $propertyDB['price'];} ?>">
                 <br>
 
                 <div>

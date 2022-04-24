@@ -31,9 +31,9 @@ function getProperties(): array
     $db = connectDatabase();
 
 
-    $sqlQuery = 'SELECT *
+    $sqlQuery = 'SELECT property.*
                     FROM property
-                    INNER JOIN propertytype ON property.property_type_id = propertytype.id';
+                    INNER JOIN propertytype ON property.property_type_id  = propertytype.id';
     $parameters = [];
 //    }
 
@@ -165,4 +165,23 @@ function updatePropertyById($id, $name, $street, $city, $postalCode, $state, $co
         'seller_id'=> $sellerId,
         'id'=> $id,
     ]);
+}
+
+function getPropertyById( $id ): array
+{
+    $db = connectDatabase();
+
+
+    $sqlQuery = 'SELECT *
+                    FROM property
+                    INNER JOIN propertytype ON property.property_type_id = propertytype.id
+                    WHERE property.id = :id;';
+    $parameters = ['id' => $id];
+//    }
+
+    $propertyStatement = $db->prepare($sqlQuery);
+    $propertyStatement->execute($parameters);
+    $property = $propertyStatement->fetchAll();
+
+    return $property[0];
 }

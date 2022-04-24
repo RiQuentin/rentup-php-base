@@ -59,7 +59,11 @@ include_once('./include/fonctions.php');
                 <th><?= $property['status']; ?></th>
                 <th><?= $property['created_at']; ?></th>
                 <th><?= $property['seller_id']; ?></th>
-                <th><a href="#"><i class="fa fa-wrench" aria-hidden="true"></i></a></th>
+                <th>
+                    <a href="createpropertyform.php?id=<?= $property['id'] ?>">
+                        <i class="fa fa-wrench" aria-hidden="true"><?= $property['id'] ?></i>
+                    </a>
+                </th>
             </tr>
         <?php endforeach; ?>
         </tbody>
