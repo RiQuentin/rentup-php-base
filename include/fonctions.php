@@ -108,3 +108,61 @@ function createProperty($name, $street, $city, $postalCode, $state, $country, $p
         'seller_id'=> $sellerId,
     ]);
 }
+
+function getTheThreeLastPropertiesNoSold(): array
+{
+    $db = connectDatabase();
+
+
+    $sqlQuery = 'SELECT *
+                    FROM property
+                    INNER JOIN propertytype ON property.property_type_id = propertytype.id
+                    WHERE property.status <> \'Sold\'
+                    ORDER BY created_at DESC
+                    LIMIT 3';
+    $parameters = [];
+//    }
+
+    $propertyStatement = $db->prepare($sqlQuery);
+    $propertyStatement->execute($parameters);
+
+    return $propertyStatement->fetchAll();
+}
+
+function updatePropertyById($id, $name, $street, $city, $postalCode, $state, $country, $price, $status, $createdAt, $image, $propertyTypeId, $sellerId) {
+    $db = connectDatabase();
+
+    $sqlQuery = "UPDATE `property` 
+                    SET 
+                        name = :name,
+                        street = :street,
+                        city = :city,
+                        postal_code = :postal_code,
+                        state = :state,
+                        country = :country,
+                        price = :price,
+                        status = :status,
+                        created_at = :created_at,
+                        image = :image,
+                        property_type_id = :property_type_id,
+                        seller_id = :seller_id 
+                    WHERE id = :id";
+
+    $propertyStatement = $db->prepare($sqlQuery);
+
+    return $propertyStatement->execute([
+        'name' => $name,
+        'street' => $street,
+        'city' => $city,
+        'postal_code' => $postalCode,
+        'state' => $state,
+        'country'=> $country,
+        'price'=> $price,
+        'status'=> $status,
+        'created_at'=> $createdAt,
+        'image'=> $image,
+        'property_type_id'=> $propertyTypeId,
+        'seller_id'=> $sellerId,
+        'id'=> $id,
+    ]);
+}

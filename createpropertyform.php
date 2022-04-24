@@ -113,6 +113,8 @@ if (isset($_POST['name']) && isset($_POST['street'])) {
                     <label for="forRent">For Rent</label>
                     <input type="radio" id="status" name="status" value="For Sale">
                     <label for="forSale">For Sale</label>
+                    <input type="radio" id="status" name="status" value="Sold">
+                    <label for="forSale">Sold</label>
                 </div>
 
                 <label for="createdAt">Crée le :</label>

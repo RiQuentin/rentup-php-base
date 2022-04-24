@@ -66,7 +66,7 @@ include_once('./include/fonctions.php');
                 <div class="property-list">
 
                     <?php  ?>
-                    <?php foreach (getProperties() as $property) : ?>
+                    <?php foreach (getTheThreeLastPropertiesNoSold() as $property) : ?>
                     <article class="card">
                         <div class="card-img-container">
                             <img src="./images/<?php echo htmlentities($property['image']) ?>" alt="<?php echo htmlentities($property['name']) ?>">
@@ -75,6 +75,8 @@ include_once('./include/fonctions.php');
                             <header class="card-content-header">
                                 <?php if ($property['status'] === 'For Rent'): ?>
                                     <div class="badge badge-warning">For Rent</div>
+                                <?php elseif ($property['status'] === 'Sold'): ?>
+                                    <div class="badge badge-danger">Sold</div>
                                 <?php else: ?>
                                     <div class="badge badge-success">For Sale</div>
                                 <?php endif; ?>
