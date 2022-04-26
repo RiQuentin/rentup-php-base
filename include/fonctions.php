@@ -171,13 +171,11 @@ function getPropertyById( $id ): array
 {
     $db = connectDatabase();
 
-
     $sqlQuery = 'SELECT *
                     FROM property
                     INNER JOIN propertytype ON property.property_type_id = propertytype.id
                     WHERE property.id = :id;';
     $parameters = ['id' => $id];
-//    }
 
     $propertyStatement = $db->prepare($sqlQuery);
     $propertyStatement->execute($parameters);

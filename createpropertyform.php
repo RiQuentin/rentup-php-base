@@ -50,28 +50,32 @@ if (isset($_POST['name']) && isset($_POST['street']) && !isset($_GET['id'])) {
 
 if (isset($_POST['name']) && isset($_POST['street']) && isset($_GET['id'])) {
 
-    $propertyDB = getPropertyById($_GET['id']);
-    $filePathBdd = $propertyDB['image'];
-
-    if ($_FILES['image']['error'] == 0){
-        if ($_FILES['image']['size'] <= 1000000){
-            $fileInfo = pathinfo($_FILES['image']['name']);
-            $extension = $fileInfo['extension'];
-            $mimetype = mime_content_type($_FILES['image']['tmp_name']);
-            $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
-            if (in_array($extension, $allowedExtensions) && in_array($mimetype, array('image/jpeg', 'image/gif', 'image/png'))){
-                $filePathBdd = basename($_FILES['image']['name']);
-                $filePath = 'images/' . basename($_FILES['image']['name']);
-                move_uploaded_file($_FILES['image']['tmp_name'], $filePath);
+    if($_POST['myCheck']==="on"){
+        if ($_FILES['image']['error'] == 0){
+            if ($_FILES['image']['size'] <= 1000000){
+                $fileInfo = pathinfo($_FILES['image']['name']);
+                $extension = $fileInfo['extension'];
+                $mimetype = mime_content_type($_FILES['image']['tmp_name']);
+                $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+                if (in_array($extension, $allowedExtensions) && in_array($mimetype, array('image/jpeg', 'image/gif', 'image/png'))){
+                    $filePathBdd = basename($_FILES['image']['name']);
+                    $filePath = 'images/' . basename($_FILES['image']['name']);
+                    move_uploaded_file($_FILES['image']['tmp_name'], $filePath);
+                }else {
+                    echo '<script>alert("Le fichier doit être une image")</script>';
+                }
             }else {
-                echo '<script>alert("Le fichier doit être une image")</script>';
+                echo '<script>alert(" l \'image ne doit pas dépasser 1mo")</script>';
             }
         }else {
-            echo '<script>alert(" l \'image ne doit pas dépasser 1mo")</script>';
+            echo '<script>alert("Une erreur est survenue lors de l\'import de l\'image")</script>';
         }
-    }else {
-        echo '<script>alert("Une erreur est survenue lors de l\'import de l\'image")</script>';
+    }else{
+        $propertyDB = getPropertyById($_GET['id']);
+        $filePathBdd = $propertyDB['image'];
     }
+
+
 
     if(updatePropertyById(
             $_GET['id'],
@@ -173,17 +177,22 @@ if (isset($_GET['id'])){
                 <input type="date" class="form-control" name="createdAt" id="createdAt" required value="<?php if($tokenUpdate !== null){echo $propertyDB['created_at'];} ?>">
                 <br>
 
-                <label for="image">Choisissez une image pour la propriéte :</label>
-                <div>Image original : <?php if($tokenUpdate !== null){echo $propertyDB['image'];} ?></div>
-                <input type="file"
-                       class="form-control-file"
-                       name="image"
-                       id="image"
-                       accept="image/*"
-                       <?php if($tokenUpdate === null){echo 'required';} ?>
-                       value="<?php if($tokenUpdate !== null){echo $propertyDB['image'];} ?>">
+                <label for="image">Choisissez une image pour la propriétée :</label>
+                <?php if ($tokenUpdate !== null): ?>
+                    <div>'Image original : '<?= $propertyDB['image'] ?></div>
+                    <label for="myCheck">Modifier l'image :</label>
+                    <input type="checkbox" name="myCheck" id="myCheck" onclick="myFunction()">
+                <?php endif; ?>
+                <div id="text" style="<?php if($tokenUpdate !== null){echo 'display:none';} ?>">
+                    <input type="file"
+                           class="form-control-file"
+                           name="image"
+                           id="image"
+                           accept="image/*"
+                        <?php if($tokenUpdate === null){echo 'required';} ?>
+                    >
+                </div>
                 <br>
-
 
                 <label for="propertyTypeId">Type de la propriétée :</label>
                 <select id="propertyTypeId" class="form-control" name="propertyTypeId">
@@ -231,8 +240,19 @@ if (isset($_GET['id'])){
         <i class="fa fa-arrow-up" aria-hidden="true"></i>
     </a>
 </aside>
-
-<script src="dist/app.js"></script>
+<script src="dist/app.js">
+</script>
+<script>
+    function myFunction() {
+        var checkBox = document.getElementById("myCheck");
+        var text = document.getElementById("text");
+        if (checkBox.checked == true){
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
+    }
+</script>
 </body>
 
 </html>
