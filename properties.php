@@ -61,7 +61,7 @@ include_once('./include/fonctions.php');
                 <th><?= $property['seller_id']; ?></th>
                 <th>
                     <a href="createpropertyform.php?id=<?= $property['id'] ?>">
-                        <i class="fa fa-wrench" aria-hidden="true"><?= $property['id'] ?></i>
+                        <i class="fa fa-wrench" aria-hidden="true"></i>
                     </a>
                 </th>
             </tr>

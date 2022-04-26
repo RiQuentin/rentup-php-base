@@ -4,7 +4,7 @@
 $tokenUpdate = null;
 
 include_once('./include/fonctions.php');
-if (isset($_POST['name']) && isset($_POST['street'])) {
+if (isset($_POST['name']) && isset($_POST['street']) && !isset($_GET['id'])) {
 
     $filePathBdd = "default-image";
 
@@ -29,6 +29,52 @@ if (isset($_POST['name']) && isset($_POST['street'])) {
     }
 
     if(createProperty(
+            $_POST['name'],
+            $_POST['street'],
+            $_POST['city'],
+            $_POST['postalCode'],
+            $_POST['state'],
+            $_POST['country'],
+            $_POST['price'],
+            $_POST['status'],
+            $_POST['createdAt'],
+            $filePathBdd,
+            $_POST['propertyTypeId'],
+            $_POST['sellerId']
+        ) === true) {
+        header('Location: index.php');
+    } else {
+        $messageErreur = 'Une erreur est survenue lors de la création de la recette';
+    }
+}
+
+if (isset($_POST['name']) && isset($_POST['street']) && isset($_GET['id'])) {
+
+    $propertyDB = getPropertyById($_GET['id']);
+    $filePathBdd = $propertyDB['image'];
+
+    if ($_FILES['image']['error'] == 0){
+        if ($_FILES['image']['size'] <= 1000000){
+            $fileInfo = pathinfo($_FILES['image']['name']);
+            $extension = $fileInfo['extension'];
+            $mimetype = mime_content_type($_FILES['image']['tmp_name']);
+            $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+            if (in_array($extension, $allowedExtensions) && in_array($mimetype, array('image/jpeg', 'image/gif', 'image/png'))){
+                $filePathBdd = basename($_FILES['image']['name']);
+                $filePath = 'images/' . basename($_FILES['image']['name']);
+                move_uploaded_file($_FILES['image']['tmp_name'], $filePath);
+            }else {
+                echo '<script>alert("Le fichier doit être une image")</script>';
+            }
+        }else {
+            echo '<script>alert(" l \'image ne doit pas dépasser 1mo")</script>';
+        }
+    }else {
+        echo '<script>alert("Une erreur est survenue lors de l\'import de l\'image")</script>';
+    }
+
+    if(updatePropertyById(
+            $_GET['id'],
             $_POST['name'],
             $_POST['street'],
             $_POST['city'],
@@ -85,7 +131,7 @@ if (isset($_GET['id'])){
             <h1><?php echo $tokenUpdate!==null ? "Modifier une nouvelle propriétée" : "Ajout d'une nouvelle propriétée" ; ?> :</h1>
 
 
-            <form class="form-group" action="createpropertyform.php" method="post"
+            <form class="form-group" action="createpropertyform.php<?php if($tokenUpdate !== null){echo '?id='.$_GET['id'];} ?>" method="post"
                   enctype="multipart/form-data">
 
                 <label for="name">Nom :</label>
@@ -115,20 +161,27 @@ if (isset($_GET['id'])){
 
                 <div>
                     Statut du bien :
-                    <input type="radio" id="status" name="status" value="For Rent">
+                    <input type="radio" id="status" name="status" value="For Rent" <?php if($tokenUpdate !== null  && $propertyDB['status'] === "For Rent" ){echo 'checked';} ?> >
                     <label for="forRent">For Rent</label>
-                    <input type="radio" id="status" name="status" value="For Sale">
+                    <input type="radio" id="status" name="status" value="For Sale" <?php if($tokenUpdate !== null  && $propertyDB['status'] === "For Sale" ){echo 'checked';} ?> >
                     <label for="forSale">For Sale</label>
-                    <input type="radio" id="status" name="status" value="Sold">
+                    <input type="radio" id="status" name="status" value="Sold" <?php if($tokenUpdate !== null  && $propertyDB['status'] === "Sold" ){echo 'checked';} ?> >
                     <label for="forSale">Sold</label>
                 </div>
 
                 <label for="createdAt">Crée le :</label>
-                <input type="date" class="form-control" name="createdAt" id="createdAt" required>
+                <input type="date" class="form-control" name="createdAt" id="createdAt" required value="<?php if($tokenUpdate !== null){echo $propertyDB['created_at'];} ?>">
                 <br>
 
                 <label for="image">Choisissez une image pour la propriéte :</label>
-                <input type="file" class="form-control-file" name="image" id="image" accept="image/*" required>
+                <div>Image original : <?php if($tokenUpdate !== null){echo $propertyDB['image'];} ?></div>
+                <input type="file"
+                       class="form-control-file"
+                       name="image"
+                       id="image"
+                       accept="image/*"
+                       <?php if($tokenUpdate === null){echo 'required';} ?>
+                       value="<?php if($tokenUpdate !== null){echo $propertyDB['image'];} ?>">
                 <br>
 
 
@@ -136,7 +189,9 @@ if (isset($_GET['id'])){
                 <select id="propertyTypeId" class="form-control" name="propertyTypeId">
                     <option value="">-- Veuillez choisir un type --</option>
                     <?php foreach (getPropertyTypes() as $propertyType) : ?>
-                        <option value="<?= $propertyType['id'] ?>"><?= $propertyType['nametype'] ?></option>
+                        <option value="<?= $propertyType['id'] ?>" <?php if($tokenUpdate !== null  && $propertyDB['property_type_id'] === $propertyType['id'] ){echo 'selected';} ?> >
+                            <?= $propertyType['nametype'] ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
 
@@ -144,7 +199,9 @@ if (isset($_GET['id'])){
                 <select id="sellerId" class="form-control" name="sellerId">
                     <option value="">-- Veuillez choisir un vendeur --</option>
                     <?php foreach (getSellers() as $seller) : ?>
-                        <option value="<?= $seller['id'] ?>"><?= $seller['firstname'] ?> <?= $seller['lastname'] ?></option>
+                        <option value="<?= $seller['id'] ?>" <?php if($tokenUpdate !== null  && $propertyDB['seller_id'] === $seller['id'] ){echo 'selected';} ?> >
+                            <?= $seller['firstname'] ?> <?= $seller['lastname'] ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
                 <br>
