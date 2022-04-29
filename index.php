@@ -3,6 +3,7 @@
 //session_start();
 
 include_once('./include/fonctions.php');
+include_once('./include/variables.php');
 
 ?>
 
@@ -16,66 +17,68 @@ include_once('./include/fonctions.php');
 </head>
 
 <body>
-    <!-- https://themezhub.net/rentup-live/rentup/home-3.html -->
-    <?php include_once('./include/header.php') ?>
+<!-- https://themezhub.net/rentup-live/rentup/home-3.html -->
+<?php include_once('./include/header.php') ?>
 
 
-    <main>
+<main>
 
-        <section class="section-home">
-            <div class="container section-home-content">
-                <h1>Search Your Next Home</h1>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Debitis porro doloremque consequuntur,
-                    error incidunt, sed natus qui temporibus eius alias nemo beatae explicabo sint ratione consequatur.
-                    Deleniti minus vero quas.</p>
-            </div>
-        </section>
+    <section class="section-home">
+        <div class="container section-home-content">
+            <h1>Search Your Next Home</h1>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Debitis porro doloremque consequuntur,
+                error incidunt, sed natus qui temporibus eius alias nemo beatae explicabo sint ratione consequatur.
+                Deleniti minus vero quas.</p>
+        </div>
+    </section>
 
-        <section class="section section-bg-grey">
-            <div class="container">
+    <section class="section section-bg-grey">
+        <div class="container">
 
-                <header class="section-header">
-                    <h2>Featured Property Types</h2>
-                    <p>Find All Type of Property.</p>
-                </header>
-                <?php  ?>
-                <div class="property-type-list">
-                    <?php foreach (getPropertyTypes() as $propertyType) : ?>
+            <header class="section-header">
+                <h2>Featured Property Types</h2>
+                <p>Find All Type of Property.</p>
+            </header>
+            <?php ?>
+            <div class="property-type-list">
+                <?php foreach (getPropertyTypes() as $propertyType) : ?>
                     <article class="card">
                         <div class="icon">
-                            <img src="./images/<?php echo htmlentities($propertyType['picto']) ?>" alt="<?php echo htmlentities($propertyType['nametype']) ?>">
+                            <img src="./images/<?php echo htmlentities($propertyType['picto']) ?>"
+                                 alt="<?php echo htmlentities($propertyType['nametype']) ?>">
                         </div>
                         <h3><?php echo htmlentities($propertyType['nametype']) ?></h3>
                         <p><?php echo htmlentities($propertyType['nbproperty']) ?></p>
                     </article>
-                    <?php endforeach ?>
-                </div>
+                <?php endforeach ?>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="section">
-            <div class="container">
+    <section class="section">
+        <div class="container">
 
-                <header class="section-header">
-                    <h2>Recent Property Listed</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae excepturi animi amet incidunt ad,
-                        ut et quisquam eveniet tenetur asperiores ipsum obcaecati doloremque cupiditate totam deserunt
-                        officia quia atque nam.</p>
-                </header>
+            <header class="section-header">
+                <h2>Recent Property Listed</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae excepturi animi amet incidunt ad,
+                    ut et quisquam eveniet tenetur asperiores ipsum obcaecati doloremque cupiditate totam deserunt
+                    officia quia atque nam.</p>
+            </header>
 
-                <div class="property-list">
+            <div class="property-list">
 
-                    <?php  ?>
-                    <?php foreach (getTheThreeLastPropertiesNoSold() as $property) : ?>
+                <?php ?>
+                <?php foreach (getTheThreeLastPropertiesNoSold() as $property) : ?>
                     <article class="card">
                         <div class="card-img-container">
-                            <img src="./images/<?php echo htmlentities($property['image']) ?>" alt="<?php echo htmlentities($property['name']) ?>">
+                            <img src="./images/<?php echo htmlentities($property['image']) ?>"
+                                 alt="<?php echo htmlentities($property['name']) ?>">
                         </div>
                         <div class="card-content">
                             <header class="card-content-header">
-                                <?php if ($property['status'] === 'For Rent'): ?>
+                                <?php if ($property['status'] === FORRENT): ?>
                                     <div class="badge badge-warning">For Rent</div>
-                                <?php elseif ($property['status'] === 'Sold'): ?>
+                                <?php elseif ($property['status'] === SOLD): ?>
                                     <div class="badge badge-danger">Sold</div>
                                 <?php else: ?>
                                     <div class="badge badge-success">For Sale</div>
@@ -85,7 +88,7 @@ include_once('./include/fonctions.php');
                             <h3><?php echo htmlentities($property['name']) ?></h3>
                             <p>
                                 <i class="fa fa-map-marker"></i>
-                                <?php echo htmlentities($property['postal_code'].'  '.$property['street'].'  ,'.$property['country']) ?>
+                                <?php echo htmlentities($property['postal_code'] . '  ' . $property['street'] . '  ,' . $property['country']) ?>
                             </p>
                         </div>
                         <footer class="card-footer">
@@ -98,108 +101,109 @@ include_once('./include/fonctions.php');
                             <div><?php echo htmlentities($property['nametype']) ?></div>
                         </footer>
                     </article>
-                    <?php endforeach ?>
-                </div>
-
+                <?php endforeach ?>
             </div>
-        </section>
 
-        <section class="section">
-            <div class="container">
-                <header class="section-header">
-                    <h2>Explore By Location</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae excepturi animi amet incidunt ad,
-                        ut et quisquam eveniet tenetur asperiores ipsum obcaecati doloremque cupiditate totam deserunt
-                        officia quia atque nam.</p>
-                </header>
-                <div class="city-list">
-                    <div class="city-list-item">
-                        <div class="city-bg-grey"></div>
-                        <h3 class="city-list-title">New Orleans, Louisiana</h3>
-                        <div class="city-list-infos">
-                            <span>12 Villas</span>
-                            <span>10 Apartments</span>
-                            <span>07 Offices</span>
-                        </div>
-                    </div>
-                    <div class="city-list-item">
-                        <div class="city-bg-grey"></div>
-                        <h3 class="city-list-title">Jerrsy, United State</h3>
-                        <div class="city-list-infos">
-                            <span>12 Villas</span>
-                            <span>10 Apartments</span>
-                            <span>07 Offices</span>
-                        </div>
-                    </div>
-                    <div class="city-list-item">
-                        <div class="city-bg-grey"></div>
-                        <h3 class="city-list-title">Liverpool, London</h3>
-                        <div class="city-list-infos">
-                            <span>12 Villas</span>
-                            <span>10 Apartments</span>
-                            <span>07 Offices</span>
-                        </div>
-                    </div>
-                    <div class="city-list-item">
-                        <div class="city-bg-grey"></div>
-                        <h3 class="city-list-title">New York, United States</h3>
-                        <div class="city-list-infos">
-                            <span>12 Villas</span>
-                            <span>10 Apartments</span>
-                            <span>07 Offices</span>
-                        </div>
-                    </div>
-                    <div class="city-list-item">
-                        <div class="city-bg-grey"></div>
-                        <h3 class="city-list-title">Montreal, Canada</h3>
-                        <div class="city-list-infos">
-                            <span>12 Villas</span>
-                            <span>10 Apartments</span>
-                            <span>07 Offices</span>
-                        </div>
-                    </div>
-                    <div class="city-list-item">
-                        <div class="city-bg-grey"></div>
-                        <h3 class="city-list-title">California, USA</h3>
-                        <div class="city-list-infos">
-                            <span>12 Villas</span>
-                            <span>10 Apartments</span>
-                            <span>07 Offices</span>
-                        </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <header class="section-header">
+                <h2>Explore By Location</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae excepturi animi amet incidunt ad,
+                    ut et quisquam eveniet tenetur asperiores ipsum obcaecati doloremque cupiditate totam deserunt
+                    officia quia atque nam.</p>
+            </header>
+            <div class="city-list">
+                <div class="city-list-item">
+                    <div class="city-bg-grey"></div>
+                    <h3 class="city-list-title">New Orleans, Louisiana</h3>
+                    <div class="city-list-infos">
+                        <span>12 Villas</span>
+                        <span>10 Apartments</span>
+                        <span>07 Offices</span>
                     </div>
                 </div>
+                <div class="city-list-item">
+                    <div class="city-bg-grey"></div>
+                    <h3 class="city-list-title">Jerrsy, United State</h3>
+                    <div class="city-list-infos">
+                        <span>12 Villas</span>
+                        <span>10 Apartments</span>
+                        <span>07 Offices</span>
+                    </div>
+                </div>
+                <div class="city-list-item">
+                    <div class="city-bg-grey"></div>
+                    <h3 class="city-list-title">Liverpool, London</h3>
+                    <div class="city-list-infos">
+                        <span>12 Villas</span>
+                        <span>10 Apartments</span>
+                        <span>07 Offices</span>
+                    </div>
+                </div>
+                <div class="city-list-item">
+                    <div class="city-bg-grey"></div>
+                    <h3 class="city-list-title">New York, United States</h3>
+                    <div class="city-list-infos">
+                        <span>12 Villas</span>
+                        <span>10 Apartments</span>
+                        <span>07 Offices</span>
+                    </div>
+                </div>
+                <div class="city-list-item">
+                    <div class="city-bg-grey"></div>
+                    <h3 class="city-list-title">Montreal, Canada</h3>
+                    <div class="city-list-infos">
+                        <span>12 Villas</span>
+                        <span>10 Apartments</span>
+                        <span>07 Offices</span>
+                    </div>
+                </div>
+                <div class="city-list-item">
+                    <div class="city-bg-grey"></div>
+                    <h3 class="city-list-title">California, USA</h3>
+                    <div class="city-list-infos">
+                        <span>12 Villas</span>
+                        <span>10 Apartments</span>
+                        <span>07 Offices</span>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="section">
-            <div class="container">
-                <header class="section-header">
-                    <h2>Our Featured Agents</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae excepturi animi amet incidunt ad,
-                        ut et quisquam eveniet tenetur asperiores ipsum obcaecati doloremque cupiditate totam deserunt
-                        officia quia atque nam.</p>
-                </header>
-                <div class="agents-list">
-                    <?php foreach (getSellers() as $seller) : ?>
+    <section class="section">
+        <div class="container">
+            <header class="section-header">
+                <h2>Our Featured Agents</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae excepturi animi amet incidunt ad,
+                    ut et quisquam eveniet tenetur asperiores ipsum obcaecati doloremque cupiditate totam deserunt
+                    officia quia atque nam.</p>
+            </header>
+            <div class="agents-list">
+                <?php foreach (getSellers() as $seller) : ?>
                     <article class="card">
                         <div class="card-img-container">
                             <div class="badge">
                                 <?php
                                 echo getNbPropertyBySeller($seller['id']);
-                                 ?>
+                                ?>
                                 listings
                             </div>
                             <div class="agent-img">
                                 <span>
                                     <img class="check" src="./images/verified.svg" alt="">
                                 </span>
-                                <img class="agent-photo" src="./images/<?= $seller['profil_picture']; ?>" alt="portrait-agent-2">
+                                <img class="agent-photo" src="./images/<?= htmlentities($seller['profil_picture']); ?>"
+                                     alt="portrait-agent-2">
                             </div>
                             <div class="agent-localisation">
-                                <i class="fa fa-map-marker"></i> <?= $seller['location']; ?>
+                                <i class="fa fa-map-marker"></i> <?= htmlentities($seller['location']); ?>
                             </div>
                             <div class="agent-name">
-                                <h3><?= $seller['firstname']; ?>  <?= $seller['lastname']; ?></h3>
+                                <h3><?= $seller['firstname']; ?>  <?= htmlentities($seller['lastname']); ?></h3>
                             </div>
                             <div class="agent-contact">
                                 <ul>
@@ -236,41 +240,41 @@ include_once('./include/fonctions.php');
                             </footer>
                         </div>
                     </article>
-                    <?php endforeach; ?>
-                </div>
+                <?php endforeach; ?>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="section section-pre-footer section-bg-green">
-            <div class="container">
-                <article class="pre-footer-text">
-                    <h2>Do You Have Questions ?</h2>
-                    <p>We help you to grow your career and growth.</p>
-                </article>
-                <div class="btn btn-pre-footer">
-                    <a href="contact.html">
-                        Contact Us Today
-                    </a>
-                </div>
+    <section class="section section-pre-footer section-bg-green">
+        <div class="container">
+            <article class="pre-footer-text">
+                <h2>Do You Have Questions ?</h2>
+                <p>We help you to grow your career and growth.</p>
+            </article>
+            <div class="btn btn-pre-footer">
+                <a href="contact.html">
+                    Contact Us Today
+                </a>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
+</main>
 
 
-    <?php include_once('./include/footer.php') ?>
+<?php include_once('./include/footer.php') ?>
 
-    <nav class="section section-bg-dark-grey footer-bottom">
-        <span>© 2022 RentUP. Designd By DWWM - Nicolas M.</span>
-    </nav>
+<nav class="section section-bg-dark-grey footer-bottom">
+    <span>© 2022 RentUP. Designd By DWWM - Nicolas M.</span>
+</nav>
 
-    <aside class="back-to-top">
-        <a class="btn back-to-top" href="#">
-            <i class="fa fa-arrow-up" aria-hidden="true"></i>
-        </a>
-    </aside>
+<aside class="back-to-top">
+    <a class="btn back-to-top" href="#">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </a>
+</aside>
 
-    <script src="dist/app.js"></script>
+<script src="dist/app.js"></script>
 </body>
 
 </html>

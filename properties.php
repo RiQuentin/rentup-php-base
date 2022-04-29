@@ -3,6 +3,7 @@
 //session_start();
 
 include_once('./include/fonctions.php');
+include_once('./include/variables.php');
 
 ?>
 
@@ -49,16 +50,20 @@ include_once('./include/fonctions.php');
         <tbody>
         <?php foreach (getProperties() as $property) : ?>
             <tr>
-                <td><?= $property['name']; ?></td>
-                <th><?= $property['street']; ?></th>
-                <th><?= $property['city']; ?></th>
-                <th><?= $property['postal_code']; ?></th>
-                <th><?= $property['state']; ?></th>
-                <th><?= $property['country']; ?></th>
-                <th><?= $property['price']; ?></th>
-                <th><?= $property['status']; ?></th>
-                <th><?= $property['created_at']; ?></th>
-                <th><?= $property['seller_id']; ?></th>
+                <td><?= htmlentities($property['name']); ?></td>
+                <th><?= htmlentities($property['street']); ?></th>
+                <th><?= htmlentities($property['city']); ?></th>
+                <th><?= htmlentities($property['postal_code']); ?></th>
+                <th><?= htmlentities($property['state']); ?></th>
+                <th><?= htmlentities($property['country']); ?></th>
+                <th><?= htmlentities($property['price']); ?></th>
+                <th><?= htmlentities($property['status']); ?></th>
+                <th><?= htmlentities($property['created_at']); ?></th>
+                <th><?php
+                    $seller =getSellerNamesById($property['seller_id']);
+                    echo htmlentities($seller["firstname"]) . " " . htmlentities($seller["lastname"]);
+                    ?>
+                </th>
                 <th>
                     <a href="createpropertyform.php?id=<?= $property['id'] ?>">
                         <i class="fa fa-wrench" aria-hidden="true"></i>

@@ -4,31 +4,33 @@
 $tokenUpdate = null;
 
 include_once('./include/fonctions.php');
+include_once('./include/variables.php');
+
 if (isset($_POST['name']) && isset($_POST['street']) && !isset($_GET['id'])) {
 
     $filePathBdd = "default-image";
 
-    if ($_FILES['image']['error'] == 0){
-        if ($_FILES['image']['size'] <= 1000000){
+    if ($_FILES['image']['error'] == 0) {
+        if ($_FILES['image']['size'] <= 1000000) {
             $fileInfo = pathinfo($_FILES['image']['name']);
             $extension = $fileInfo['extension'];
             $mimetype = mime_content_type($_FILES['image']['tmp_name']);
             $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
-            if (in_array($extension, $allowedExtensions) && in_array($mimetype, array('image/jpeg', 'image/gif', 'image/png'))){
+            if (in_array($extension, $allowedExtensions) && in_array($mimetype, array('image/jpeg', 'image/gif', 'image/png'))) {
                 $filePathBdd = basename($_FILES['image']['name']);
                 $filePath = 'images/' . basename($_FILES['image']['name']);
                 move_uploaded_file($_FILES['image']['tmp_name'], $filePath);
-            }else {
+            } else {
                 echo '<script>alert("Le fichier doit être une image")</script>';
             }
-        }else {
+        } else {
             echo '<script>alert(" l \'image ne doit pas dépasser 1mo")</script>';
         }
-    }else {
+    } else {
         echo '<script>alert("Une erreur est survenue lors de l\'import de l\'image")</script>';
     }
 
-    if(createProperty(
+    if (createProperty(
             $_POST['name'],
             $_POST['street'],
             $_POST['city'],
@@ -50,34 +52,33 @@ if (isset($_POST['name']) && isset($_POST['street']) && !isset($_GET['id'])) {
 
 if (isset($_POST['name']) && isset($_POST['street']) && isset($_GET['id'])) {
 
-    if($_POST['myCheck']==="on"){
-        if ($_FILES['image']['error'] == 0){
-            if ($_FILES['image']['size'] <= 1000000){
+    if ($_POST['imageupdate'] === "on") {
+        if ($_FILES['image']['error'] == 0) {
+            if ($_FILES['image']['size'] <= 1000000) {
                 $fileInfo = pathinfo($_FILES['image']['name']);
                 $extension = $fileInfo['extension'];
                 $mimetype = mime_content_type($_FILES['image']['tmp_name']);
                 $allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
-                if (in_array($extension, $allowedExtensions) && in_array($mimetype, array('image/jpeg', 'image/gif', 'image/png'))){
+                if (in_array($extension, $allowedExtensions) && in_array($mimetype, array('image/jpeg', 'image/gif', 'image/png'))) {
                     $filePathBdd = basename($_FILES['image']['name']);
                     $filePath = 'images/' . basename($_FILES['image']['name']);
                     move_uploaded_file($_FILES['image']['tmp_name'], $filePath);
-                }else {
+                } else {
                     echo '<script>alert("Le fichier doit être une image")</script>';
                 }
-            }else {
+            } else {
                 echo '<script>alert(" l \'image ne doit pas dépasser 1mo")</script>';
             }
-        }else {
+        } else {
             echo '<script>alert("Une erreur est survenue lors de l\'import de l\'image")</script>';
         }
-    }else{
+    } else {
         $propertyDB = getPropertyById($_GET['id']);
         $filePathBdd = $propertyDB['image'];
     }
 
 
-
-    if(updatePropertyById(
+    if (updatePropertyById(
             $_GET['id'],
             $_POST['name'],
             $_POST['street'],
@@ -98,7 +99,7 @@ if (isset($_POST['name']) && isset($_POST['street']) && isset($_GET['id'])) {
     }
 }
 
-if (isset($_GET['id'])){
+if (isset($_GET['id'])) {
     $tokenUpdate = $_GET['id'];
     $propertyDB = getPropertyById($_GET['id']);
 }
@@ -132,64 +133,104 @@ if (isset($_GET['id'])){
     <section class="section">
         <div class="container">
 
-            <h1><?php echo $tokenUpdate!==null ? "Modifier une nouvelle propriétée" : "Ajout d'une nouvelle propriétée" ; ?> :</h1>
+            <h1><?php echo $tokenUpdate !== null ? "Modifier une nouvelle propriétée" : "Ajout d'une nouvelle propriétée"; ?>
+                :</h1>
 
 
-            <form class="form-group" action="createpropertyform.php<?php if($tokenUpdate !== null){echo '?id='.$_GET['id'];} ?>" method="post"
+            <form class="form-group" action="createpropertyform.php<?php if ($tokenUpdate !== null) {
+                echo '?id=' . $tokenUpdate;
+            } ?>" method="post"
                   enctype="multipart/form-data">
 
                 <label for="name">Nom :</label>
-                <input type="text" class="form-control" name="name" id="name" required value="<?php if($tokenUpdate !== null){echo $propertyDB['name'];} ?>">
+                <input type="text" class="form-control" name="name" id="name" required
+                       value="<?php if ($tokenUpdate !== null) {
+                           echo htmlentities($propertyDB['name']);
+                       } ?>">
 
                 <label for="street">Rue :</label>
-                <input type="text" class="form-control" name="street" id="street" required value="<?php if($tokenUpdate !== null){echo $propertyDB['street'];} ?>">
+                <input type="text" class="form-control" name="street" id="street" required
+                       value="<?php if ($tokenUpdate !== null) {
+                           echo htmlentities($propertyDB['street']);
+                       } ?>">
                 <br>
 
                 <label for="city">Ville :</label>
-                <input type="text" class="form-control" name="city" id="city" required value="<?php if($tokenUpdate !== null){echo $propertyDB['city'];} ?>">
+                <input type="text" class="form-control" name="city" id="city" required
+                       value="<?php if ($tokenUpdate !== null) {
+                           echo htmlentities($propertyDB['city']);
+                       } ?>">
 
                 <label for="postalCode">Code postal :</label>
-                <input type="text" class="form-control" name="postalCode" id="postalCode" required value="<?php if($tokenUpdate !== null){echo $propertyDB['postal_code'];} ?>">
+                <input type="text" class="form-control" name="postalCode" id="postalCode" required
+                       value="<?php if ($tokenUpdate !== null) {
+                           echo htmlentities($propertyDB['postal_code']);
+                       } ?>">
                 <br>
 
                 <label for="state">State :</label>
-                <input type="text" class="form-control" name="state" id="state" required value="<?php if($tokenUpdate !== null){echo $propertyDB['state'];} ?>">
+                <input type="text" class="form-control" name="state" id="state" required
+                       value="<?php if ($tokenUpdate !== null) {
+                           echo htmlentities($propertyDB['state']);
+                       } ?>">
 
                 <label for="country">Pays :</label>
-                <input type="text" class="form-control" name="country" id="country" required value="<?php if($tokenUpdate !== null){echo $propertyDB['country'];} ?>">
+                <input type="text" class="form-control" name="country" id="country" required
+                       value="<?php if ($tokenUpdate !== null) {
+                           echo htmlentities($propertyDB['country']);
+                       } ?>">
                 <br>
 
                 <label for="price">Prix :</label>
-                <input type="number" class="form-control" name="price" id="price" placeholder="€" required value="<?php if($tokenUpdate !== null){echo $propertyDB['price'];} ?>">
+                <input type="number" class="form-control" name="price" id="price" placeholder="€" required
+                       value="<?php if ($tokenUpdate !== null) {
+                           echo htmlentities($propertyDB['price']);
+                       } ?>">
                 <br>
 
                 <div>
                     Statut du bien :
-                    <input type="radio" id="status" name="status" value="For Rent" <?php if($tokenUpdate !== null  && $propertyDB['status'] === "For Rent" ){echo 'checked';} ?> >
+                    <input type="radio" id="status" name="status"
+                           value="For Rent" <?php if ($tokenUpdate !== null && $propertyDB['status'] === FORRENT) {
+                        echo 'checked';
+                    } ?> >
                     <label for="forRent">For Rent</label>
-                    <input type="radio" id="status" name="status" value="For Sale" <?php if($tokenUpdate !== null  && $propertyDB['status'] === "For Sale" ){echo 'checked';} ?> >
+                    <input type="radio" id="status" name="status"
+                           value="For Sale" <?php if ($tokenUpdate !== null && $propertyDB['status'] === FORSALE) {
+                        echo 'checked';
+                    } ?> >
                     <label for="forSale">For Sale</label>
-                    <input type="radio" id="status" name="status" value="Sold" <?php if($tokenUpdate !== null  && $propertyDB['status'] === "Sold" ){echo 'checked';} ?> >
+                    <input type="radio" id="status" name="status"
+                           value="Sold" <?php if ($tokenUpdate !== null && $propertyDB['status'] === SOLD) {
+                        echo 'checked';
+                    } ?> >
                     <label for="forSale">Sold</label>
                 </div>
 
                 <label for="createdAt">Crée le :</label>
-                <input type="date" class="form-control" name="createdAt" id="createdAt" required value="<?php if($tokenUpdate !== null){echo $propertyDB['created_at'];} ?>">
+                <input type="date" class="form-control" name="createdAt" id="createdAt" required
+                       value="<?php if ($tokenUpdate !== null) {
+                           echo $propertyDB['created_at'];
+                       } ?>">
                 <br>
 
                 <label for="image">Choisissez une image pour la propriétée :</label>
                 <?php if ($tokenUpdate !== null): ?>
-                    <div>'Image original : '<?= $propertyDB['image'] ?></div>
-                    <label for="myCheck">Modifier l'image :</label>
-                    <input type="checkbox" name="myCheck" id="myCheck" onclick="myFunction()">
+                    <div>'Image original : '<?= htmlentities($propertyDB['image']) ?></div>
+                    <label for="imageupdate">Modifier l'image :</label>
+                    <input type="checkbox" name="imageupdate" id="imageupdate" onclick="isImageUpdate()">
                 <?php endif; ?>
-                <div id="text" style="<?php if($tokenUpdate !== null){echo 'display:none';} ?>">
+                <div id="text" style="<?php if ($tokenUpdate !== null) {
+                    echo 'display:none';
+                } ?>">
                     <input type="file"
                            class="form-control-file"
                            name="image"
                            id="image"
                            accept="image/*"
-                        <?php if($tokenUpdate === null){echo 'required';} ?>
+                        <?php if ($tokenUpdate === null) {
+                            echo 'required';
+                        } ?>
                     >
                 </div>
                 <br>
@@ -198,8 +239,10 @@ if (isset($_GET['id'])){
                 <select id="propertyTypeId" class="form-control" name="propertyTypeId">
                     <option value="">-- Veuillez choisir un type --</option>
                     <?php foreach (getPropertyTypes() as $propertyType) : ?>
-                        <option value="<?= $propertyType['id'] ?>" <?php if($tokenUpdate !== null  && $propertyDB['property_type_id'] === $propertyType['id'] ){echo 'selected';} ?> >
-                            <?= $propertyType['nametype'] ?>
+                        <option value="<?= $propertyType['id'] ?>" <?php if ($tokenUpdate !== null && $propertyDB['property_type_id'] === $propertyType['id']) {
+                            echo 'selected';
+                        } ?> >
+                            <?= htmlentities($propertyType['nametype']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -208,8 +251,10 @@ if (isset($_GET['id'])){
                 <select id="sellerId" class="form-control" name="sellerId">
                     <option value="">-- Veuillez choisir un vendeur --</option>
                     <?php foreach (getSellers() as $seller) : ?>
-                        <option value="<?= $seller['id'] ?>" <?php if($tokenUpdate !== null  && $propertyDB['seller_id'] === $seller['id'] ){echo 'selected';} ?> >
-                            <?= $seller['firstname'] ?> <?= $seller['lastname'] ?>
+                        <option value="<?= $seller['id'] ?>" <?php if ($tokenUpdate !== null && $propertyDB['seller_id'] === $seller['id']) {
+                            echo 'selected';
+                        } ?> >
+                            <?= htmlentities($seller['firstname']) ?> <?= htmlentities($seller['lastname']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -242,16 +287,7 @@ if (isset($_GET['id'])){
 </aside>
 <script src="dist/app.js">
 </script>
-<script>
-    function myFunction() {
-        var checkBox = document.getElementById("myCheck");
-        var text = document.getElementById("text");
-        if (checkBox.checked == true){
-            text.style.display = "block";
-        } else {
-            text.style.display = "none";
-        }
-    }
+<script src="js/script.js">
 </script>
 </body>
 

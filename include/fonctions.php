@@ -183,3 +183,17 @@ function getPropertyById( $id ): array
 
     return $property[0];
 }
+
+function getSellerNamesById( $id ): array
+{
+    $db = connectDatabase();
+
+    $sqlQuery = 'SELECT firstname, lastname FROM `seller` WHERE id = :id;';
+    $parameters = ['id' => $id];
+
+    $propertyStatement = $db->prepare($sqlQuery);
+    $propertyStatement->execute($parameters);
+    $property = $propertyStatement->fetchAll();
+
+    return $property[0];
+}

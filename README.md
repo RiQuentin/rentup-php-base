@@ -46,3 +46,7 @@ Les images peuvent être générées avec https://picsum.photos/
 
 # Date limite de rendu : 29 avril 2022 à 23h59
 
+## SQL
+
+le fichier d'import SQL (phpmyadmin) est à la racine du projet (`rentup.sql`)
+
